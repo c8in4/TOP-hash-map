@@ -122,6 +122,6 @@ testStrings.forEach((str) => {
 
 // console.log(newHashMap.content[91]);
 
-console.log("HashMap content:", newHashMap.get("nYJyBHJxtD"));
+console.log("HashMap content:", newHashMap.length());
 
 // console.log(newHashMap.get("eShBkYTxUd"));

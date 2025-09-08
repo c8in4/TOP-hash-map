@@ -56,10 +56,16 @@ export default class HashMap {
 
   length() {
     // return the number of stored keys
+    let length = 0;
+    this.content.forEach((bucket) => {
+      length += bucket.size();
+    });
+    return length;
   }
 
   clear() {
     // remove all entries
+    this.content = [];
   }
 
   keys() {
