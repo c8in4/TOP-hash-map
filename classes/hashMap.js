@@ -86,7 +86,7 @@ export default class HashMap {
     const values = [];
     this.content.forEach((bucket) => {
       const objects = bucket.toArray();
-      objects.forEach((object) => values.push(object));
+      objects.forEach((object) => values.push(object.value));
     });
     return values;
   }
