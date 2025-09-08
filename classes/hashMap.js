@@ -16,7 +16,7 @@ export default class HashMap {
   }
 
   set(key, value) {
-    // if key already exists, overwrite old value
+    // TODO: if key already exists, overwrite old value
     // dealing with collisions using linked lists
     const index = this.hash(key);
     const data = { key, value };
@@ -51,7 +51,7 @@ export default class HashMap {
   }
 
   remove(key) {
-    // remove entry and return true or return false
+    // TODO: remove entry and return true or return false
   }
 
   length() {
@@ -70,15 +70,40 @@ export default class HashMap {
 
   keys() {
     // return an array of all keys
+    const keys = [];
+    this.content.forEach((bucket) => {
+      const objects = bucket.toArray();
+      objects.forEach((object) => {
+        keys.push(object.key);
+      });
+    });
+
+    return keys;
   }
 
   values() {
     // return an array of all the values
+    const values = [];
+    this.content.forEach((bucket) => {
+      const objects = bucket.toArray();
+      objects.forEach((object) => values.push(object));
+    });
+    return values;
   }
 
   entries() {
     // return an array that contains all 'key, value' pairs
     // format: [[firstKey, firstValue], [secondKey, secondValue]]
+
+    const entries = [];
+    const keys = this.keys();
+    const values = this.values();
+    for (let i = 0; i < keys.length; i++) {
+      const newEntry = [keys[i], values[i]];
+      entries.push(newEntry);
+    }
+
+    return entries;
   }
 }
 

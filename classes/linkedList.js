@@ -105,6 +105,19 @@ export default class LinkedList {
     return string;
   }
 
+  toArray() {
+    if (!this.nextNode) return;
+    let temp = this;
+    const result = [];
+
+    do {
+      temp = temp.nextNode;
+      result.push(temp.value);
+    } while (temp.nextNode);
+
+    return result;
+  }
+
   // Extra credit
   insertAt(value, index) {
     // inserts a new node with the provided 'value' at the given 'index'.
