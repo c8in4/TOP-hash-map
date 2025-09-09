@@ -5,19 +5,15 @@ export default class HashMap {
     this.buckets = [];
   }
 
-  checkCapacity() {
-    if (this.length() > this.loadFactor * this.capacity) {
-      this.capacity *= 2;
+  updateCapacity() {
+    this.capacity *= 2;
 
-      //   // console.log("new capacity", this.capacity);
-      //   const currentElements = this.values();
-      //   this.clear();
-      //   currentElements.forEach((element) => {
-      //     this.set(element.key, element);
-      //   });
-      //   // console.log("capacity doubled and elements copied");
-      //   return;
-    }
+    const currentElements = this.entries();
+    this.clear();
+
+    currentElements.forEach((element) => {
+      this.set(element[0], element[1]);
+    });
   }
 
   hash(key) {
@@ -33,8 +29,10 @@ export default class HashMap {
   // dealing with collisions
   // if key already exists, overwrite old value
   set(key, value) {
+    if (this.length() > this.loadFactor * this.capacity) {
+      this.updateCapacity();
+    }
     const index = this.hash(key);
-
     if (!this.buckets[index]) {
       this.buckets[index] = { [key]: value };
     } else {
@@ -52,6 +50,7 @@ export default class HashMap {
   // return true or false
   has(key) {
     const index = this.hash(key);
+    if (!this.buckets[index]) return false;
     return key in this.buckets[index];
   }
 
@@ -79,49 +78,35 @@ export default class HashMap {
 
   // return an array of all keys
   keys() {
-    // const keys = [];
-    // this.buckets.forEach((bucket) => {
-    //   if (!bucket) return;
-    //   const objects = bucket.toArray();
-    //   if (!objects) return;
-    //   objects.forEach((object) => {
-    //     if (!object) return;
-    //     keys.push(object.key);
-    //   });
-    // });
-    // return keys;
+    let keys = [];
+    this.buckets.forEach((bucket) => (keys = keys.concat(Object.keys(bucket))));
+    return keys;
   }
 
   // return an array of all the values
   values() {
-    // const values = [];
-    // this.buckets.forEach((bucket) => {
-    //   if (!bucket) return;
-    //   const objects = bucket.toArray();
-    //   if (!objects) return;
-    //   objects.forEach((object) => {
-    //     if (!object) return;
-    //     values.push(object.value);
-    //   });
-    // });
-    // return values;
+    let values = [];
+    this.buckets.forEach(
+      (bucket) => (values = values.concat(Object.values(bucket)))
+    );
+    return values;
   }
 
   // return an array that contains all 'key, value' pairs
   // format: [[firstKey, firstValue], [secondKey, secondValue]]
   entries() {
-    // const entries = [];
-    // const keys = this.keys();
-    // const values = this.values();
-    // for (let i = 0; i < keys.length; i++) {
-    //   const newEntry = [keys[i], values[i]];
-    //   entries.push(newEntry);
-    // }
-    // return entries;
+    const entries = [];
+    const keys = this.keys();
+    const values = this.values();
+    for (let i = 0; i < keys.length; i++) {
+      const newEntry = [keys[i], values[i]];
+      entries.push(newEntry);
+    }
+    return entries;
   }
 }
 
 // snippet to limit hashMap size
-// if (index < 0 || index >= buckets.length) {
+// if (index < 0 || index >= this.buckets.length) {
 //   throw new Error("Trying to access index out of bounds");
 // }
