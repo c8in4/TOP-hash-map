@@ -6,12 +6,19 @@ export default class HashMap {
     this.content = [];
   }
 
-  test() {
+  checkForResize() {
     const resize = this.loadFactor * this.capacity;
-    console.log(resize < this.length());
-    if (resize < this.length()) {
+    if (this.length() + 1 > resize) {
       this.capacity *= 2;
-      console.log(this.capacity);
+      // console.log("new capacity", this.capacity);
+
+      const currentElements = this.values();
+      this.clear();
+      currentElements.forEach((element) => {
+        this.set(element.key, element);
+      });
+      // console.log("capacity doubled and elements copied");
+      return;
     }
   }
 
@@ -30,7 +37,7 @@ export default class HashMap {
   set(key, value) {
     const index = this.hash(key);
     const data = { key, value };
-
+    this.checkForResize();
     if (!this.content[index]) {
       const newLinkedList = new LinkedList();
       newLinkedList.append(data);
@@ -38,6 +45,7 @@ export default class HashMap {
     } else {
       this.content[index].append(data);
     }
+    // return console.log(`${value} set`);
   }
 
   // return value or null
@@ -69,6 +77,8 @@ export default class HashMap {
     const linkedListIndex = this.content[hashMapIndex].find(key);
 
     this.content[hashMapIndex].removeAt(linkedListIndex);
+    // console.log(this.content[hashMapIndex].at(linkedListIndex));
+
     // console.log("item has been removed");
 
     return true;
@@ -78,6 +88,7 @@ export default class HashMap {
   length() {
     let length = 0;
     this.content.forEach((bucket) => {
+      if (!bucket) return;
       length += bucket.size();
     });
     return length;
@@ -86,15 +97,19 @@ export default class HashMap {
   // remove all entries
   clear() {
     this.content = [];
-    return console.log("hashMap has been cleared");
+    // console.log("hashMap has been cleared");
+    return;
   }
 
   // return an array of all keys
   keys() {
     const keys = [];
     this.content.forEach((bucket) => {
+      if (!bucket) return;
       const objects = bucket.toArray();
+      if (!objects) return;
       objects.forEach((object) => {
+        if (!object) return;
         keys.push(object.key);
       });
     });
@@ -106,8 +121,13 @@ export default class HashMap {
   values() {
     const values = [];
     this.content.forEach((bucket) => {
+      if (!bucket) return;
       const objects = bucket.toArray();
-      objects.forEach((object) => values.push(object.value));
+      if (!objects) return;
+      objects.forEach((object) => {
+        if (!object) return;
+        values.push(object.value);
+      });
     });
     return values;
   }
