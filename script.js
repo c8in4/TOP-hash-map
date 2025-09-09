@@ -121,32 +121,32 @@ const mockData = createMockObjects(testStrings);
 mockData.forEach((object) => newHashMap.set(object.key, object));
 
 // get(key)
-// console.log("Get existing key:", newHashMap.get("pBzQuRqKWA"));
-// console.log("Get non-existing key:", newHashMap.get("pBzQuRqKW"));
+console.log("Get existing key:", newHashMap.get("pBzQuRqKWA"));
+console.log("Get non-existing key:", newHashMap.get("pBzQuRqKW"));
 
 // has(key)
-// console.log("Has:", newHashMap.has("pBzQuRqKWA"));
-// console.log("Has not:", newHashMap.has("pBzQuRqKW"));
+console.log("Has:", newHashMap.has("pBzQuRqKWA"));
+console.log("Has not:", newHashMap.has("pBzQuRqKW"));
 
 // remove(key)
-// console.log("remove item IlVvpTvJIT:", newHashMap.remove("IlVvpTvJIT"));
-// console.log("remove item GIKpPtFXZq:", newHashMap.remove("GIKpPtFXZq"));
-// console.log("remove non-existing item", newHashMap.remove("pBzQuRqKW"));
+console.log("remove item IlVvpTvJIT:", newHashMap.remove("IlVvpTvJIT"));
+console.log("remove item GIKpPtFXZq:", newHashMap.remove("GIKpPtFXZq"));
+console.log("remove non-existing item", newHashMap.remove("pBzQuRqKW"));
 
 // length()
-// console.log("HashMap length:", newHashMap.length());
+console.log("HashMap length:", newHashMap.length());
 
 // clear()
 // newHashMap.clear();
 
 // keys()
-// console.log("HashMap keys:", newHashMap.keys());
+console.log("HashMap keys:", newHashMap.keys());
 
 // values()
-// console.log("HashMap values:", newHashMap.values());
+console.log("HashMap values:", newHashMap.values());
 
 // entries()
-// console.log("HashMap entries:", newHashMap.entries());
+console.log("HashMap entries:", newHashMap.entries());
 
 // The Odin Project - test
 const test = new HashMap(0.8, 8);
@@ -163,4 +163,4 @@ test.set("jacket", { key: "jacket", value: "blue" });
 test.set("kite", { key: "kite", value: "pink" });
 test.set("lion", { key: "lion", value: "golden" });
 
-console.log(test);
+// console.log(test);

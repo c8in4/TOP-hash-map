@@ -88,8 +88,7 @@ export default class HashMap {
   length() {
     let length = 0;
     this.content.forEach((bucket) => {
-      if (!bucket) return;
-      length += bucket.size();
+      if (bucket) length += bucket.size();
     });
     return length;
   }
