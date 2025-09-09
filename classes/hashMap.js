@@ -2,7 +2,7 @@ export default class HashMap {
   constructor(loadFactor, capacity) {
     this.loadFactor = loadFactor;
     this.capacity = capacity;
-    this.content = [];
+    this.buckets = [];
   }
 
   checkCapacity() {
@@ -30,60 +30,49 @@ export default class HashMap {
     return hashCode;
   }
 
-  // dealing with collisions?
+  // dealing with collisions
   // if key already exists, overwrite old value
   set(key, value) {
-    const bucketIndex = this.hash(key);
-    const data = { [key]: value };
+    const index = this.hash(key);
 
-    if (!this.content[bucketIndex]) {
-      this.content[bucketIndex] = data;
+    if (!this.buckets[index]) {
+      this.buckets[index] = { [key]: value };
     } else {
-      this.content[bucketIndex][key] = value;
+      this.buckets[index][key] = value;
     }
   }
 
   // return value or null
   get(key) {
-    // const hashMapIndex = this.hash(key);
-    // const linkedListIndex = this.content[hashMapIndex]
-    //   ? this.content[hashMapIndex].find(key)
-    //   : null;
-    // return linkedListIndex == null
-    //   ? null
-    //   : this.content[hashMapIndex].at(linkedListIndex).value;
+    const index = this.hash(key);
+    if (!this.has(key)) return null;
+    return this.buckets[index][key];
   }
 
   // return true or false
   has(key) {
-    const hashMapIndex = this.hash(key);
-    return key in this.content[hashMapIndex];
+    const index = this.hash(key);
+    return key in this.buckets[index];
   }
 
   // remove entry and return true or return false
   remove(key) {
-    // if (!this.has(key)) return false;
-    // // console.log("can not remove item - item does not exist");
-    // const hashMapIndex = this.hash(key);
-    // const linkedListIndex = this.content[hashMapIndex].find(key);
-    // this.content[hashMapIndex].removeAt(linkedListIndex);
-    // // console.log(this.content[hashMapIndex].at(linkedListIndex));
-    // // console.log("item has been removed");
-    // return true;
+    if (!this.has(key)) return false;
+    const index = this.hash(key);
+    delete this.buckets[index][key];
+    return true;
   }
 
   // return the number of stored keys
   length() {
-    // let length = 0;
-    // this.content.forEach((bucket) => {
-    //   if (bucket) length += bucket.size();
-    // });
-    // return length;
+    let length = 0;
+    this.buckets.forEach((bucket) => (length += Object.keys(bucket).length));
+    return length;
   }
 
   // remove all entries
   clear() {
-    this.content = [];
+    this.buckets = [];
     // console.log("hashMap has been cleared");
     return;
   }
@@ -91,7 +80,7 @@ export default class HashMap {
   // return an array of all keys
   keys() {
     // const keys = [];
-    // this.content.forEach((bucket) => {
+    // this.buckets.forEach((bucket) => {
     //   if (!bucket) return;
     //   const objects = bucket.toArray();
     //   if (!objects) return;
@@ -106,7 +95,7 @@ export default class HashMap {
   // return an array of all the values
   values() {
     // const values = [];
-    // this.content.forEach((bucket) => {
+    // this.buckets.forEach((bucket) => {
     //   if (!bucket) return;
     //   const objects = bucket.toArray();
     //   if (!objects) return;
