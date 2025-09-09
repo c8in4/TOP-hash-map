@@ -1,8 +1,18 @@
 import LinkedList from "./linkedList.js";
 export default class HashMap {
   constructor(loadFactor, capacity) {
+    this.loadFactor = loadFactor;
     this.capacity = capacity;
     this.content = [];
+  }
+
+  test() {
+    const resize = this.loadFactor * this.capacity;
+    console.log(resize < this.length());
+    if (resize < this.length()) {
+      this.capacity *= 2;
+      console.log(this.capacity);
+    }
   }
 
   hash(key) {
@@ -15,9 +25,9 @@ export default class HashMap {
     return hashCode;
   }
 
+  // dealing with collisions using linked lists
+  // TODO: if key already exists, overwrite old value
   set(key, value) {
-    // TODO: if key already exists, overwrite old value
-    // dealing with collisions using linked lists
     const index = this.hash(key);
     const data = { key, value };
 
@@ -30,8 +40,8 @@ export default class HashMap {
     }
   }
 
+  // return value or null
   get(key) {
-    // return value or null
     const hashMapIndex = this.hash(key);
     const linkedListIndex = this.content[hashMapIndex]
       ? this.content[hashMapIndex].find(key)
@@ -42,20 +52,30 @@ export default class HashMap {
       : this.content[hashMapIndex].at(linkedListIndex).value;
   }
 
+  // return true or false
   has(key) {
-    // return true or false
     const hashMapIndex = this.hash(key);
     return this.content[hashMapIndex]
       ? this.content[hashMapIndex].contains(key)
       : false;
   }
 
+  // remove entry and return true or return false
   remove(key) {
-    // TODO: remove entry and return true or return false
+    if (!this.has(key)) return false;
+    // console.log("can not remove item - item does not exist");
+
+    const hashMapIndex = this.hash(key);
+    const linkedListIndex = this.content[hashMapIndex].find(key);
+
+    this.content[hashMapIndex].removeAt(linkedListIndex);
+    // console.log("item has been removed");
+
+    return true;
   }
 
+  // return the number of stored keys
   length() {
-    // return the number of stored keys
     let length = 0;
     this.content.forEach((bucket) => {
       length += bucket.size();
@@ -63,13 +83,14 @@ export default class HashMap {
     return length;
   }
 
+  // remove all entries
   clear() {
-    // remove all entries
     this.content = [];
+    return console.log("hashMap has been cleared");
   }
 
+  // return an array of all keys
   keys() {
-    // return an array of all keys
     const keys = [];
     this.content.forEach((bucket) => {
       const objects = bucket.toArray();
@@ -81,8 +102,8 @@ export default class HashMap {
     return keys;
   }
 
+  // return an array of all the values
   values() {
-    // return an array of all the values
     const values = [];
     this.content.forEach((bucket) => {
       const objects = bucket.toArray();
@@ -91,10 +112,9 @@ export default class HashMap {
     return values;
   }
 
+  // return an array that contains all 'key, value' pairs
+  // format: [[firstKey, firstValue], [secondKey, secondValue]]
   entries() {
-    // return an array that contains all 'key, value' pairs
-    // format: [[firstKey, firstValue], [secondKey, secondValue]]
-
     const entries = [];
     const keys = this.keys();
     const values = this.values();
