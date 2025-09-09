@@ -26,8 +26,6 @@ export default class HashMap {
     return hashCode;
   }
 
-  // dealing with collisions
-  // if key already exists, overwrite old value
   set(key, value) {
     if (this.length() > this.loadFactor * this.capacity) {
       this.updateCapacity();
@@ -40,21 +38,18 @@ export default class HashMap {
     }
   }
 
-  // return value or null
   get(key) {
     const index = this.hash(key);
     if (!this.has(key)) return null;
     return this.buckets[index][key];
   }
 
-  // return true or false
   has(key) {
     const index = this.hash(key);
     if (!this.buckets[index]) return false;
     return key in this.buckets[index];
   }
 
-  // remove entry and return true or return false
   remove(key) {
     if (!this.has(key)) return false;
     const index = this.hash(key);
@@ -62,28 +57,23 @@ export default class HashMap {
     return true;
   }
 
-  // return the number of stored keys
   length() {
     let length = 0;
     this.buckets.forEach((bucket) => (length += Object.keys(bucket).length));
     return length;
   }
 
-  // remove all entries
   clear() {
     this.buckets = [];
-    // console.log("hashMap has been cleared");
     return;
   }
 
-  // return an array of all keys
   keys() {
     let keys = [];
     this.buckets.forEach((bucket) => (keys = keys.concat(Object.keys(bucket))));
     return keys;
   }
 
-  // return an array of all the values
   values() {
     let values = [];
     this.buckets.forEach(
@@ -92,8 +82,6 @@ export default class HashMap {
     return values;
   }
 
-  // return an array that contains all 'key, value' pairs
-  // format: [[firstKey, firstValue], [secondKey, secondValue]]
   entries() {
     const entries = [];
     const keys = this.keys();
@@ -105,8 +93,3 @@ export default class HashMap {
     return entries;
   }
 }
-
-// snippet to limit hashMap size
-// if (index < 0 || index >= this.buckets.length) {
-//   throw new Error("Trying to access index out of bounds");
-// }

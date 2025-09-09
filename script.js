@@ -168,7 +168,7 @@ console.log("Has not:", test.has("pBzQuRqKW"));
 
 // remove(key)
 console.log("remove grape:", test.remove("grape"));
-console.log("remove non-existing item", test.remove("pBzQuRqKW"));
+console.log("remove non-existing item", test.remove("car"));
 
 // length()
 console.log("HashMap length:", test.length());
